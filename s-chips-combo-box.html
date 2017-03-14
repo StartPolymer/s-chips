@@ -33,6 +33,7 @@
 </style>
 
 <vaadin-combo-box-light
+    id="comboBox"
     attr-for-value="value"
     filtered-items="[[_filteredItems]]"
     on-filter-changed="_onFilterChanged">
@@ -102,6 +103,8 @@ Polymer({
         // Filter selected chips from dropdown
         return labels.indexOf(chip.label) < 0;
       });
+      // Deselect item from combo box overlay
+      this.$.comboBox.selectedItem = '';
     }
   }
 

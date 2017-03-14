@@ -29,6 +29,7 @@
 
 :host {
   display: block;
+  line-height: 1;
   width: 100%;
   @apply --s-chips-input;
 }
@@ -38,6 +39,10 @@
   height: 32px;
   margin-bottom: 8px;
   @apply --s-chips-input-input;
+}
+
+paper-input-container {
+  @apply --s-chips-input-input-container;
 }
 
 </style>
@@ -132,8 +137,10 @@ Polymer({
   },
 
   _inputValueChanged: function(inputValue) {
-    this._isAddChipLock = true;
-    this.value = inputValue;
+    if (this.isAttached) {
+      this._isAddChipLock = true;
+      this.value = inputValue;
+    }
   },
 
   _onChipTap: function(event) {
@@ -171,7 +178,7 @@ Polymer({
   },
 
   _valueChanged: function(value) {
-    if (!this._isAddChipLock) {
+    if (this.isAttached && !this._isAddChipLock) {
       if (this._addChip(value.trim())) {
         this._inputValue = '';
       }

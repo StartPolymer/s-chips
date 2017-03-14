@@ -112,6 +112,15 @@ Polymer({
     'tap': '_onTap'
   },
 
+  removeChip: function(label) {
+    for (var i = 0; i < this.selectedChips.length; i++) {
+      if (this.selectedChips[i].label === label) {
+        this.splice('selectedChips', i, 1);
+        break;
+      }
+    }
+  },
+
   _addChip: function(label) {
     var chipsFilter = this.chips.filter(function(chip) { return chip.label.toLowerCase() === label.toLowerCase(); });
     var selectedChipsFilter = this.selectedChips.filter(function(chip) { return chip.label.toLowerCase() === label.toLowerCase(); });
@@ -128,8 +137,10 @@ Polymer({
   },
 
   _onChipTap: function(event) {
+    event.stopPropagation();
     if (Polymer.dom(event).localTarget.slot !== 'suffix') {
       this.fire('s-chip-tap', Polymer.dom(event).localTarget.label);
+      //console.log(Polymer.dom(event).rootTarget.offsetTop);
     }
   },
 
@@ -152,20 +163,11 @@ Polymer({
   },
 
   _onRemoveIconTap: function(event) {
-    this._removeChip(event.target.label);
+    this.removeChip(event.target.label);
   },
 
   _onTap: function() {
     this.$.input.focus();
-  },
-
-  _removeChip: function(label) {
-    for (var i = 0; i < this.selectedChips.length; i++) {
-      if (this.selectedChips[i].label === label) {
-        this.splice('selectedChips', i, 1);
-        break;
-      }
-    }
   },
 
   _valueChanged: function(value) {

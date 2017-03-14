@@ -36,7 +36,7 @@
     attr-for-value="value"
     filtered-items="[[_filteredItems]]"
     on-filter-changed="_onFilterChanged">
-  <s-chips-input class="input" chips="[[chips]]" selected-chips="{{selectedChips}}"></s-chips-input>
+  <s-chips-input class="input" id="input" chips="[[chips]]" selected-chips="{{selectedChips}}"></s-chips-input>
 </vaadin-combo-box-light>
 
 </template>
@@ -72,6 +72,10 @@ Polymer({
     '_chipsChanged(chips)',
     '_selectedChipsChanged(selectedChips, selectedChips.splices)'
   ],
+
+  removeChip: function(label) {
+    this.$.input.removeChip(label);
+  },
 
   _chipsChanged: function(chips) {
     this._filteredItems = chips;

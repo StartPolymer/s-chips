@@ -1,0 +1,107 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../vaadin-combo-box/vaadin-combo-box-light.html">
+<link rel="import" href="s-chips-input.html">
+
+<!--
+    ## &lt;s-chips-combo-box&gt;
+
+    [Material Design Chips](https://material.google.com/components/chips.htm)
+
+    `<s-chip>` implements the material design chip. The following is the example
+    of the `<s-chip>` usage
+
+    ```html
+
+    ```
+
+    @element s-chips-combo-box
+    @blurb A chip material design implementation.
+    @homepage
+    @demo demo/s-chips-combo-box.html
+-->
+<dom-module id="s-chips-combo-box">
+<template>
+
+<style>
+
+:host {
+  display: block;
+  width: 100%;
+  @apply --s-chips-combo-box;
+}
+
+</style>
+
+<vaadin-combo-box-light
+    attr-for-value="value"
+    filtered-items="[[_filteredItems]]"
+    on-filter-changed="_onFilterChanged">
+  <s-chips-input class="input" chips="[[chips]]" selected-chips="{{selectedChips}}"></s-chips-input>
+</vaadin-combo-box-light>
+
+</template>
+<script>
+
+Polymer({
+
+  is: 's-chips-combo-box',
+
+  properties: {
+    /**
+     * A full set of items to filter the visible options from.
+     * The items can be of either `String` or `Object` type.
+     */
+    chips: {
+      type: Array
+    },
+
+    /**
+     * Gets or sets the selected chips.
+     */
+    selectedChips: {
+      type: Array,
+      notify: true
+    },
+
+    _filteredItems: {
+      type: Array
+    }
+  },
+
+  observers: [
+    '_chipsChanged(chips)',
+    '_selectedChipsChanged(selectedChips, selectedChips.splices)'
+  ],
+
+  _chipsChanged: function(chips) {
+    this._filteredItems = chips;
+  },
+
+  _onFilterChanged: function(event) {
+    var value = event.detail.value.trim().toLowerCase();
+    if (value !== '') {
+      var labels = this.selectedChips.map(function(chip) {
+        return chip.label;
+      });
+      this._filteredItems = this.chips.filter(function(chip) {
+        return labels.indexOf(chip.label) < 0 && chip.label.toLowerCase().indexOf(value) > -1;
+      });
+    }
+  },
+
+  _selectedChipsChanged: function(selectedChips, splices) {
+    if (this.chips) {
+      var labels = selectedChips.map(function(chip) {
+        return chip.label;
+      });
+      this._filteredItems = this.chips.filter(function(chip) {
+        // Filter selected chips from dropdown
+        return labels.indexOf(chip.label) < 0;
+      });
+    }
+  }
+
+});
+
+</script>
+</dom-module>

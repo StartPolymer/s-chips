@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>s-chips-input demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../paper-styles/color.html">
+    <link rel="import" href="../../vaadin-combo-box/vaadin-combo-box-light.html">
+
+    <link rel="import" href="../all-imports.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic s-chips-input</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <s-chips-input id="input" allow-custom-value></s-chips-input>
+
+          <script>
+            var items = [
+              {label: 'One', value: 1},
+              {label: 'Two', value: 2},
+              {label: 'Three', value: 3}
+            ];
+            var input = document.querySelector('#input');
+            input.chips = items;
+          </script>
+        </template>
+      </demo-snippet>
+
+      <h3>s-chips-input with vaadin-combo-box-light</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <style is="custom-style">
+            vaadin-combo-box-light {
+              width: 100%;
+            }
+          </style>
+
+          <vaadin-combo-box-light id="demo1" attr-for-value="value">
+            <s-chips-input id="input1" class="input"></s-chips-input>
+          </vaadin-combo-box-light>
+
+          <script>
+            var items = [
+              {label: 'One', value: 1},
+              {label: 'Two', value: 2},
+              {label: 'Three', value: 3}
+            ];
+            var combobox1 = document.querySelector('#demo1');
+            var input1 = document.querySelector('#input1');
+            combobox1.items = items;
+            input1.chips = items;
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

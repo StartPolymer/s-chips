@@ -1,0 +1,184 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-input/iron-input.html">
+<link rel="import" href="../paper-input/paper-input-container.html">
+<link rel="import" href="s-chip.html">
+<link rel="import" href="s-chips-icons.html">
+
+<!--
+    ## &lt;s-chips-input&gt;
+
+    [Material Design Chips](https://material.google.com/components/chips.htm)
+
+    `<s-chip>` implements the material design chip. The following is the example
+    of the `<s-chip>` usage
+
+    ```html
+
+    ```
+
+    @element s-chips-input
+    @blurb A chip material design implementation.
+    @homepage
+    @demo demo/s-chips-input.html
+-->
+<dom-module id="s-chips-input">
+<template>
+
+<style>
+
+:host {
+  display: block;
+  width: 100%;
+  @apply --s-chips-input;
+}
+
+#input {
+  width: 33%;
+  height: 32px;
+  margin-bottom: 8px;
+  @apply --s-chips-input-input;
+}
+
+</style>
+
+<paper-input-container>
+  <template is="dom-repeat" items="[[selectedChips]]">
+    <s-chip label="[[item.label]]" on-tap="_onChipTap">
+      <iron-icon slot="suffix" icon="s-chips:cancel" label="[[item.label]]" on-tap="_onRemoveIconTap"></iron-icon>
+    </s-chip>
+  </template>
+  <input is="iron-input" id="input" bind-value="{{_inputValue}}" on-keydown="_onInputKeyDown"></input>
+</paper-input-container>
+
+</template>
+<script>
+
+Polymer({
+
+  is: 's-chips-input',
+
+  properties: {
+    /**
+     * If `true`, the user can input a value that is not present in the chips list.
+     * `value` property will be set to the input value in this case.
+     * Also, when `value` is set programmatically, the input value will be set
+     * to reflect that value.
+     */
+    allowCustomValue: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * The list of chips from which a selection can be made.
+     */
+    chips: {
+      type: Array,
+      notify: true,
+      value: function() { return []; }
+    },
+
+    /**
+     * Gets or sets the selected chips.
+     */
+    selectedChips: {
+      type: Array,
+      notify: true,
+      value: function() { return []; }
+    },
+
+    /**
+     * Gets or sets the currently input value.
+     */
+    value: {
+      type: String,
+      notify: true,
+      observer: '_valueChanged'
+    },
+
+    _inputValue: {
+      type: String,
+      observer: '_inputValueChanged'
+    },
+
+    _isAddChipLock: {
+      type: Boolean,
+      value: false
+    }
+  },
+
+  listeners: {
+    'tap': '_onTap'
+  },
+
+  _addChip: function(label) {
+    var chipsFilter = this.chips.filter(function(chip) { return chip.label.toLowerCase() === label.toLowerCase(); });
+    var selectedChipsFilter = this.selectedChips.filter(function(chip) { return chip.label.toLowerCase() === label.toLowerCase(); });
+    if (label !== '' && selectedChipsFilter.length === 0 && chipsFilter.length !== 0) {
+      this.push('selectedChips', {label: chipsFilter[0].label});
+      return true;
+    }
+    return false;
+  },
+
+  _inputValueChanged: function(inputValue) {
+    this._isAddChipLock = true;
+    this.value = inputValue;
+  },
+
+  _onChipTap: function(event) {
+    if (Polymer.dom(event).localTarget.slot !== 'suffix') {
+      this.fire('s-chip-tap', Polymer.dom(event).localTarget.label);
+    }
+  },
+
+  _onInputKeyDown: function(event) {
+    var keyVal = event.which;
+    var value = event.target.value.trim();
+    // Enter
+    if (keyVal === 13) {
+      if (this._addChip(value)) {
+        event.target.value = '';
+      } else if (this.allowCustomValue) {
+        this.push('selectedChips', {label: value});
+        event.target.value = '';
+      }
+    // Backspace
+    } else if ((keyVal === 8) && (event.target.value === '')) {
+      // Remove last chip
+      this.pop('selectedChips');
+    }
+  },
+
+  _onRemoveIconTap: function(event) {
+    this._removeChip(event.target.label);
+  },
+
+  _onTap: function() {
+    this.$.input.focus();
+  },
+
+  _removeChip: function(label) {
+    for (var i = 0; i < this.selectedChips.length; i++) {
+      if (this.selectedChips[i].label === label) {
+        this.splice('selectedChips', i, 1);
+        break;
+      }
+    }
+  },
+
+  _valueChanged: function(value) {
+    if (!this._isAddChipLock) {
+      if (this._addChip(value.trim())) {
+        this._inputValue = '';
+      }
+    } else {
+      this._isAddChipLock = false;
+    }
+  }
+
+});
+
+</script>
+</dom-module>

@@ -1,0 +1,99 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="s-chips-combo-box.html">
+
+<!--
+    ## &lt;s-chips&gt;
+
+    [Material Design Chips](https://material.google.com/components/chips.htm)
+
+    `<s-chip>` implements the material design chip. The following is the example
+    of the `<s-chip>` usage
+
+    ```html
+
+    ```
+
+    @element s-chips
+    @blurb A chip material design implementation.
+    @homepage
+    @demo demo/s-chips.html
+-->
+<dom-module id="s-chips">
+<template>
+
+<style>
+
+:host {
+  display: block;
+  position: relative;
+  width: 100%;
+  @apply --s-chips;
+}
+
+#detail {
+  display: none;
+  position: absolute;
+  top: 10px;
+  background-color: #fff;
+  min-width: 200px;
+  height: 48px;
+  z-index: 500;
+}
+
+/* Tablet wide */
+@media screen and (max-width: 600px) {
+  :host {
+    --s-chip-suffix: {
+      display: none;
+    };
+  }
+}
+
+</style>
+
+<s-chips-combo-box id="comboBox" chips="[[chips]]" selected-chips="{{selectedChips}}"></s-chips-combo-box>
+
+<div id="detail">
+  <div>[[_detailLabel]]</div>
+</div>
+
+</template>
+<script>
+
+Polymer({
+
+  is: 's-chips',
+
+  properties: {
+    /**
+     * A full set of items to filter the visible options from.
+     * The items can be of either `String` or `Object` type.
+     */
+    chips: {
+      type: Array
+    },
+
+    /**
+     * Gets or sets the selected chips.
+     */
+    selectedChips: {
+      type: Array,
+      notify: true
+    },
+
+    _detailLabel: String
+  },
+
+  listeners: {
+    's-chip-tap': '_onChipTap'
+  },
+
+  _onChipTap: function(event) {
+    this._detailLabel = event.detail;
+    this.$.detail.style.display = 'block';
+  },
+
+});
+
+</script>
+</dom-module>

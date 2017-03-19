@@ -53,7 +53,7 @@ paper-input-container {
       <iron-icon slot="suffix" icon="s-chips:cancel" label="[[item.label]]" on-tap="_onRemoveIconTap"></iron-icon>
     </s-chip>
   </template>
-  <input is="iron-input" id="input" bind-value="{{_inputValue}}" on-keydown="_onInputKeyDown"></input>
+  <input is="iron-input" id="input" bind-value="{{_inputValue}}" on-keydown="_onInputKeyDown" autocomplete="off"></input>
 </paper-input-container>
 
 </template>

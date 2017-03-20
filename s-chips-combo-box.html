@@ -36,7 +36,8 @@
     id="comboBox"
     attr-for-value="value"
     filtered-items="[[_filteredItems]]"
-    on-filter-changed="_onFilterChanged">
+    on-filter-changed="_onFilterChanged"
+    disable-dropdown-focused-item>
   <s-chips-input class="input" id="input" chips="[[chips]]" selected-chips="{{selectedChips}}"></s-chips-input>
 </vaadin-combo-box-light>
 

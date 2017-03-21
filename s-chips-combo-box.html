@@ -105,7 +105,9 @@ Polymer({
         return labels.indexOf(chip.label) < 0;
       });
       // Deselect item from combo box overlay
-      this.$.comboBox.selectedItem = '';
+      this.async(function() {
+        this.$.comboBox.selectedItem = '';
+      });
     }
   }
 

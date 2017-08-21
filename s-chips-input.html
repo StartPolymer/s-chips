@@ -130,7 +130,7 @@ Polymer({
     var chipsFilter = this.chips.filter(function(chip) { return chip.label.toLowerCase() === label.toLowerCase(); });
     var selectedChipsFilter = this.selectedChips.filter(function(chip) { return chip.label.toLowerCase() === label.toLowerCase(); });
     if (label !== '' && selectedChipsFilter.length === 0 && chipsFilter.length !== 0) {
-      this.push('selectedChips', {label: chipsFilter[0].label});
+      this.push('selectedChips', chipsFilter[0]);
       return true;
     }
     return false;

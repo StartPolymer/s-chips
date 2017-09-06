@@ -80,7 +80,10 @@ Polymer({
   },
 
   _chipsChanged: function(chips) {
-    this._filteredItems = chips;
+    this._filteredItems = chips.map(function(chip) {
+      chip.label = chip.label.trim();
+      return chip;
+    });
   },
 
   _onFilterChanged: function(event) {

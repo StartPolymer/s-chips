@@ -38,7 +38,12 @@
     filtered-items="[[_filteredItems]]"
     on-filter-changed="_onFilterChanged"
     disable-dropdown-focused-item>
-  <s-chips-input class="input" id="input" chips="[[chips]]" selected-chips="{{selectedChips}}"></s-chips-input>
+  <s-chips-input
+      class="input"
+      id="input"
+      chips="[[chips]]"
+      selected-chips="{{selectedChips}}"
+      allow-custom-value="[[allowCustomValue]]"></s-chips-input>
 </vaadin-combo-box-light>
 
 </template>
@@ -49,6 +54,17 @@ Polymer({
   is: 's-chips-combo-box',
 
   properties: {
+    /**
+     * If `true`, the user can input a value that is not present in the chips list.
+     * `value` property will be set to the input value in this case.
+     * Also, when `value` is set programmatically, the input value will be set
+     * to reflect that value.
+     */
+     allowCustomValue: {
+      type: Boolean,
+      value: false
+    },
+
     /**
      * A full set of items to filter the visible options from.
      * The items can be of either `String` or `Object` type.
